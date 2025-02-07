@@ -33,8 +33,10 @@ function updateProgress() {
 function setProgress() {
   video.currentTime = (progressBar.value / 100) * video.duration;
 }
+const progressValue = progressBar.value || 0;
+expect(progressValue).to.be.a("number");
 
-// 🔊 Change Volume
+
 function changeVolume() {
   video.volume = volumeBar.value;
 }
