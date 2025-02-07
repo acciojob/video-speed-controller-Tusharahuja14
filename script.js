@@ -1,5 +1,5 @@
 const video = document.querySelector(".video-player");
-const playBtn = document.querySelector(".player_video");
+const playBtn = document.querySelector(".player__video");
 const speed = document.querySelector(".speed");
 const speedBar = document.querySelector(".speed-bar");
 
