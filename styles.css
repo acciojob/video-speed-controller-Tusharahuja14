@@ -24,7 +24,7 @@ body {
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-.play-btn {
+.player__video {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -39,7 +39,7 @@ body {
   transition: 0.3s;
 }
 
-.play-btn:hover {
+.player__video:hover {
   background: rgba(0, 0, 0, 0.8);
 }
 
@@ -68,3 +68,20 @@ body {
   font-weight: bold;
   line-height: 30px;
 }
+button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.progress-bar, .volume, .playbackSpeed {
+    width: 20%;
+}
+.volume-bar {
+  width: 150px;
+  height: 5px;
+  cursor: pointer;
+}
+
