@@ -1,51 +1,67 @@
-const inputs = document.querySelectorAll('.controls input');
-const player = document.querySelector(".player");
-const video = player.querySelector(".viewer");
-const progress = player.querySelector(".progress");
-const progressBar = player.querySelector(".progress__filled");
-const toggle = player.querySelector(".toggle");
-const skipButtons = player.querySelectorAll("[data-skip]");
-const ranges = player.querySelectorAll(".player__slider");
+// Select elements
+const video = document.querySelector('.player__video');
+const toggle = document.querySelector('.toggle');
+const volume = document.querySelector('.volume');
+const playbackSpeed = document.querySelector('.playbackSpeed');
+const rewind = document.querySelector('.rewind');
+const forward = document.querySelector('.forward');
+const progress = document.querySelector('.progress');
+const progressFilled = document.querySelector('.progress__filled');
 
-    function handleUpdate() {
-      const suffix = this.dataset.sizing || '';
-      document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
-    }
-toggle.addEventListener("click", togglePlay);
-
-    inputs.forEach(input => input.addEventListener('change', handleUpdate));
-    inputs.forEach(input => input.addEventListener('mousemove', handleUpdate));
-video.addEventListener("timeupdate", handlerProgress);
-
-for (let skip of skipButtons) {
-  skip.addEventListener("click", forwardOrBackward);
-}
-
-for (let range of ranges) {
-  range.addEventListener("change", handleRangeUpdate);
-}
-
+// Toggle play/pause functionality
 function togglePlay() {
-  if (video.paused) {
-    video.play();
-    toggle.innerText = "❚ ❚";
-  } else {
-    video.pause();
-    toggle.innerText = "►";
-  }
+    if (video.paused) {
+        video.play();
+    } else {
+        video.pause();
+    }
 }
 
-function handlerProgress() {
-  const currentProgress = (video.currentTime / video.duration) * 100;
-  progressBar.style.flexBasis = `${currentProgress}%`;
+// Update toggle button icon
+function updateToggleButton() {
+    toggle.textContent = video.paused ? '►' : '❚ ❚';
 }
 
-function forwardOrBackward(event) {
-  let element = event.target;
-  video.currentTime += parseFloat(element.attributes["data-skip"].value);
+// Update progress bar
+function updateProgress() {
+    const percent = (video.currentTime / video.duration) * 100;
+    progressFilled.style.flexBasis = `${percent}%`;
 }
 
-function handleRangeUpdate(event) {
-  let element = event.target;
-  video[element.name] = element.value;
+// Seek video on progress bar click
+function seekVideo(event) {
+    const newTime = (event.offsetX / progress.offsetWidth) * video.duration;
+    video.currentTime = newTime;
 }
+
+// Adjust volume
+function handleVolumeChange() {
+    video.volume = volume.value;
+}
+
+// Adjust playback speed
+function handleSpeedChange() {
+    video.playbackRate = playbackSpeed.value;
+}
+
+// Rewind video
+function rewindVideo() {
+    video.currentTime = Math.max(0, video.currentTime - 10);
+}
+
+// Forward video
+function forwardVideo() {
+    video.currentTime = Math.min(video.duration, video.currentTime + 25);
+}
+
+// Event listeners
+toggle.addEventListener('click', togglePlay);
+video.addEventListener('click', togglePlay);
+video.addEventListener('play', updateToggleButton);
+video.addEventListener('pause', updateToggleButton);
+video.addEventListener('timeupdate', updateProgress);
+progress.addEventListener('click', seekVideo);
+volume.addEventListener('input', handleVolumeChange);
+playbackSpeed.addEventListener('input', handleSpeedChange);
+rewind.addEventListener('click', rewindVideo);
+forward.addEventListener('click', forwardVideo);
